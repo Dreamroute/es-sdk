@@ -5,9 +5,13 @@ import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.core.TermVectorsRequest;
+import org.elasticsearch.client.core.TermVectorsResponse;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,7 +29,7 @@ public class CrudTest {
     public static void initDataTest() {
         user.setId(100L);
         user.setName("w.dehai");
-        user.setPassword("123456");
+        user.setPassword("123456789");
         user.setAge(30);
         userJson = JSON.toJSONString(user);
     }
@@ -50,6 +54,27 @@ public class CrudTest {
         GetResponse resp = client.get(request, RequestOptions.DEFAULT);
         String userJson = resp.getSourceAsString();
         System.err.println(userJson);
+    }
+    
+    @Test
+    public void updateTest() throws Exception {
+        UpdateRequest request = new UpdateRequest(INDEX, String.valueOf(user.getId()))
+                .doc(userJson, XContentType.JSON);
+        UpdateResponse resp = client.update(request, RequestOptions.DEFAULT);
+        System.err.println(resp);
+    }
+    
+    @Test
+    public void termVectorsTest() throws Exception {
+        TermVectorsRequest request = new TermVectorsRequest(INDEX, String.valueOf(user.getId()));
+        request.setFields("name");
+        TermVectorsResponse resp = client.termvectors(request, RequestOptions.DEFAULT);
+        System.err.println(resp);
+    }
+    
+    @Test
+    public void deleteIndexTest() throws Exception {
+        
     }
 
 }
