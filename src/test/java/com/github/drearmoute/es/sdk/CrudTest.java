@@ -27,8 +27,8 @@ public class CrudTest {
 
     @BeforeAll
     public static void initDataTest() {
-        user.setId(100L);
-        user.setName("w.dehai");
+        user.setId(102L);
+        user.setName("this is the w.dehai's first data.");
         user.setPassword("123456789");
         user.setAge(30);
         userJson = JSON.toJSONString(user);
