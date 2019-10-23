@@ -3,7 +3,6 @@ package com.github.drearmoute.es.sdk;
 import java.util.Map;
 
 import org.apache.http.HttpHost;
-import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -23,10 +22,10 @@ import org.junit.jupiter.api.Test;
 import com.alibaba.fastjson.JSON;
 
 public class SearchTest {
-    
+
     private static RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost("10.82.12.67", 9200, "http")));
     private static final String INDEX = "user";
-    
+
     @Test
     public void matchAllTest() throws Exception {
         SearchSourceBuilder builder = new SearchSourceBuilder();
@@ -36,7 +35,7 @@ public class SearchTest {
         SearchResponse resp = client.search(request, RequestOptions.DEFAULT);
         System.err.println(JSON.toJSONString(resp, true));
     }
-    
+
     @Test
     public void termQueryTest() throws Exception {
         SearchSourceBuilder builder = new SearchSourceBuilder();
@@ -46,7 +45,7 @@ public class SearchTest {
         SearchResponse resp = client.search(request, RequestOptions.DEFAULT);
         System.err.println(JSON.toJSONString(resp, true));
     }
-    
+
     @Test
     public void fulltextTest() throws Exception {
         MatchQueryBuilder query = new MatchQueryBuilder("name", "w.dehai");
@@ -60,7 +59,7 @@ public class SearchTest {
         SearchResponse resp = client.search(request, RequestOptions.DEFAULT);
         System.err.println(resp);
     }
-    
+
     /**
      * 高亮需要注意：如果把SearchResponse直接调用JSON.toJSONString打印出来，是无法完全把SearchResponse显示正确的，而是需要调用resp.toString()才能显示正确的字符串结果
      */
@@ -72,13 +71,13 @@ public class SearchTest {
         query.prefixLength(3);
         query.maxExpansions(10);
         builder.query(query);
-        
+
         HighlightBuilder hbuilder = new HighlightBuilder();
         HighlightBuilder.Field nameField = new HighlightBuilder.Field("name");
         nameField.highlighterType("unified");
         hbuilder.field(nameField);
         builder.highlighter(hbuilder);
-        
+
         SearchRequest request = new SearchRequest(INDEX);
         request.source(builder);
         SearchResponse resp = client.search(request, RequestOptions.DEFAULT);
@@ -99,7 +98,7 @@ public class SearchTest {
             });
         }
     }
-    
+
     @Test
     public void scrollSearchTest() throws Exception {
         SearchRequest request = new SearchRequest();
@@ -108,13 +107,13 @@ public class SearchTest {
         builder.size(2);
         request.source(builder);
         request.scroll(TimeValue.timeValueMinutes(1L));
-        
+
         SearchResponse resp = client.search(request, RequestOptions.DEFAULT);
         String scrollId = resp.getScrollId();
         SearchHits hits = resp.getHits();
         System.err.println(scrollId);
         long total = hits.getTotalHits().value;
-        if ( total> 0L) {
+        if (total > 0L) {
             hits.forEach(hit -> {
                 System.err.println(hit.getSourceAsString());
             });
@@ -122,20 +121,3 @@ public class SearchTest {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
