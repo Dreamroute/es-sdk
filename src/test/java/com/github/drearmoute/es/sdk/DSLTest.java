@@ -6,6 +6,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -28,5 +29,18 @@ public class DSLTest {
         SearchResponse resp = client.search(request, RequestOptions.DEFAULT);
         System.err.println(resp);
     }
+    
+    @Test
+    public void termTest() throws Exception {
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        builder.from(0);
+        builder.size(1);
+        builder.timeout(TimeValue.timeValueMinutes(1));
+        builder.query(QueryBuilders.termQuery("name", "first"));
+        SearchRequest request = new SearchRequest("user").source(builder);
+        SearchResponse resp = client.search(request, RequestOptions.DEFAULT);
+        System.err.println(resp);
+    }
+    
 
 }
