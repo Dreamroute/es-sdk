@@ -10,6 +10,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.junit.jupiter.api.Test;
 
 public class DSLTest {
@@ -42,5 +43,10 @@ public class DSLTest {
         System.err.println(resp);
     }
     
+    /**
+     * https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-query-builders.html
+     * https://www.elastic.co/guide/en/elasticsearch/reference/6.0/query-filter-context.html
+     * https://www.elastic.co/guide/en/elasticsearch/reference/6.0/search-request-stored-fields.html
+     */
 
 }
