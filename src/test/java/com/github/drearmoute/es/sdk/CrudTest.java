@@ -20,16 +20,17 @@ import com.alibaba.fastjson.JSON;
 
 public class CrudTest {
 
-    private static final String INDEX = "user";
+    private static final String INDEX = "w.dehai";
     private static String userJson;
     private static User user = new User();
     private static RestHighLevelClient client = new RestHighLevelClient(RestClient.builder(new HttpHost("10.82.12.67", 9200, "http")));
 
     @BeforeAll
     public static void initDataTest() {
-        user.setId(102L);
-        user.setName("this is the w.dehai's first data.");
-        user.setPassword("123456789");
+        user.setId(106L);
+        user.setName("w.dehai");
+        user.setFullName("w.dehai");
+        user.setPassword("w.dehai");
         user.setAge(30);
         userJson = JSON.toJSONString(user);
     }
